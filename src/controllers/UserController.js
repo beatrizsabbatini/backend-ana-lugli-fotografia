@@ -1,6 +1,21 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const config = require('../config/auth')
+
+function validaCookies(req, res, next){
+    const {cookie} = req;
+    if('session_id' in cookie){
+        console.log('session id exist');
+        if(cookie.session_id === jwt.sign({id:user.id}, config.secret)){
+            next();
+        }else{
+            res.status(403).send({msg: 'sem cookie'});
+        }
+    }else{
+        res.status(403).send({msg: 'sem cookie'});
+    }
+}
 
 module.exports = {
     index(req, res){
@@ -37,6 +52,11 @@ module.exports = {
 
         user.senha= undefined;
 
+        const token = jwt.sign({id:user.id}, config.secret,{
+            expiresIn: 864000, //um dia
+        })
+
+        res.cookie('session', token);
         res.send({user});
-    }
+    },
 }
