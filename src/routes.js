@@ -1,12 +1,17 @@
 const express = require('express');
-const cookies = require('cookie-parser');
+const multer = require('multer');
 
 const routes = express.Router();
+const upload = multer();
 
 const User = require('./controllers/UserController');
+const Banner = require('./controllers/BannerController');
+
 
 routes.post('/api/usuarios', User.create);
 routes.post('/api/autenticacao', User.find);
+
+routes.post('/api/banner', upload.single('image'), Banner.create);
 
 
 module.exports = routes;
