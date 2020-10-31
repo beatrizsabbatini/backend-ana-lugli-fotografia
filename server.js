@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 
-moongose.connect('mongodb://localhost:27017/trabalho',{
+moongose.connect('mongodb+srv://beatriz:1915932@analugli.bykl8.mongodb.net/AnaLugli?retryWrites=true&w=majority',{
     useNewUrlParser:true,    
     useUnifiedTopology:true,
 }, function (err){
@@ -26,4 +26,4 @@ app.use(express.json());
 
 app.use(routes);
 
-app.listen(3000);
+app.listen(3333);
