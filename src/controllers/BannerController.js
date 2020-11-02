@@ -4,11 +4,11 @@ module.exports = {
 
     async create(req, res){
         const {title} = req.body; 
-        const {fileName: image} = req.file;
+        const {filename: image} = req.file;
 
         let bannerItem = await Banner.create({title, image});
 
-        return res.json({ bannerItem })
+        return res.json(bannerItem)
     }, 
 
 }

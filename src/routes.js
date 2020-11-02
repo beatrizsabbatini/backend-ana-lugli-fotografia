@@ -1,8 +1,9 @@
 const express = require('express');
 const multer = require('multer');
+const uploadConfig = require('./config/upload');
 
 const routes = express.Router();
-const upload = multer();
+const upload = multer(uploadConfig);
 
 const User = require('./controllers/UserController');
 const Banner = require('./controllers/BannerController');
