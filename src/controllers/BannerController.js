@@ -31,4 +31,17 @@ module.exports = {
 
     }, 
 
+    async update(req, res){
+
+        const { bannerItemId, title } = req.body;
+
+        try {
+            await Banner.findByIdAndUpdate(bannerItemId, { title: title });
+            return res.send({message: "Sucesso ao atualizar!"})
+        } catch (error) {
+            return res.status(400).send({message: "Erro ao atualizar!"})
+        }
+
+    }, 
+
 }
