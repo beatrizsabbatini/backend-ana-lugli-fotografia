@@ -9,6 +9,7 @@ const User = require('./controllers/UserController');
 const Banner = require('./controllers/BannerController');
 const About = require('./controllers/AboutController');
 const Category = require('./controllers/CategoriesController');
+const File = require('./controllers/FileController');
 
 const auth = require('./middlewares/auth');
 
@@ -24,9 +25,10 @@ routes.post('/api/about', auth, upload.single('image'), About.create);
 routes.get('/api/about', About.list);
 //routes.put('/api/about/', About.edit);
 
-
 routes.post('/api/category', auth, upload.single('image'), Category.create);
 routes.post('/api/category/find',Category.find);
 routes.get('/api/category', Category.list);
+
+routes.post('/api/searchFiles', File.list)
 
 module.exports = routes;
