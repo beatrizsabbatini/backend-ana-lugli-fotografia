@@ -4,7 +4,7 @@ module.exports = {
 
     async create(req, res){
         const {title} = req.body; 
-        const {fileName: image} = req.file;
+        const {filename: image} = req.file;
 
         let categoryItem = await Category.create({title, image});
 
@@ -21,6 +21,14 @@ module.exports = {
         else{
             res.json({mensagem: 'não foi possivel encontrar'});
         }
-    }
+    }, 
+
+    async list(req, res){
+
+        let categoryItems = await Category.find();
+
+        return res.json(categoryItems)
+    }, 
+
 
 }
