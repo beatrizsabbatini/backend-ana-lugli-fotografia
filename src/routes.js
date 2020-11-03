@@ -17,6 +17,7 @@ routes.post('/api/usuarios', User.create);
 routes.post('/api/autenticacao', User.find);
 
 routes.post('/api/banner', auth, upload.single('image'), Banner.create);
+routes.post('/api/bannerExistingFile', Banner.createWithExistentFile);
 routes.get('/api/banner',  Banner.list);
 routes.delete('/api/banner',  Banner.delete);
 routes.put('/api/banner',  Banner.update);

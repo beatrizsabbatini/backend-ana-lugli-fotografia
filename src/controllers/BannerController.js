@@ -11,6 +11,14 @@ module.exports = {
         return res.json(bannerItem)
     }, 
 
+    async createWithExistentFile(req, res){
+        const {title, image} = req.body; 
+
+        let bannerItem = await Banner.create({title, image});
+
+        return res.json(bannerItem)
+    }, 
+
     async list(req, res){
 
         let bannerItems = await Banner.find();

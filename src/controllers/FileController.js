@@ -18,14 +18,8 @@ module.exports = {
             const filteredFiles = files.filter(item => {
               if (item.includes(query)) return item;
             })
-
-            
-            console.log('all files', files);
-            console.log('filteredFiles', filteredFiles);
-
             return res.json(filteredFiles)
         });
   
     }, 
-
 }
