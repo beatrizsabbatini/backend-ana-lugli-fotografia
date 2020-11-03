@@ -12,21 +12,22 @@ const Category = require('./controllers/CategoriesController');
 const File = require('./controllers/FileController');
 
 const auth = require('./middlewares/auth');
+const authAdmin = require('./middlewares/authAdmin');
 
 routes.post('/api/usuarios', User.create);
 routes.post('/api/autenticacao', User.find);
 
-routes.post('/api/banner', auth, upload.single('image'), Banner.create);
+routes.post('/api/banner', authAdmin, upload.single('image'), Banner.create);
 routes.post('/api/bannerExistingFile', Banner.createWithExistentFile);
 routes.get('/api/banner',  Banner.list);
 routes.delete('/api/banner',  Banner.delete);
 routes.put('/api/banner',  Banner.update);
 
-routes.post('/api/about', auth, upload.single('image'), About.create);
+routes.post('/api/about', upload.single('image'), About.create);
 routes.get('/api/about', About.list);
 //routes.put('/api/about/', About.edit);
 
-routes.post('/api/category', auth, upload.single('image'), Category.create);
+routes.post('/api/category', upload.single('image'), Category.create);
 routes.post('/api/category/find',Category.find);
 routes.get('/api/category', Category.list);
 
