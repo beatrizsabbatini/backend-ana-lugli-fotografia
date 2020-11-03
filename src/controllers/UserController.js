@@ -1,25 +1,32 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const config = require('../config/auth')
 
-function validaCookies(req, res, next){
-    const {cookie} = req;
-    if('session_id' in cookie){
-        console.log('session id exist');
-        if(cookie.session_id === jwt.sign({id:user.id}, config.secret)){
-            next();
-        }else{
-            res.status(403).send({msg: 'sem cookie'});
-        }
-    }else{
-        res.status(403).send({msg: 'sem cookie'});
-    }
+const authConfig = require('../config/auth.json');
+
+function generateToken (params={}){
+    return jwt.sign(params, authConfig.secret, {
+        expiresIn: 86400, //um dia
+    });
 }
 
 module.exports = {
-    index(req, res){
-        res.json({message:'Hello'});
+    index(req, res, next){
+        validaCookies();
+
+        const cookies = req.cookies;
+        if('session_id' in cookies){
+            if(cookies.session_id === 'token'){
+                return res.json({cookies});
+                next();
+            }else{
+                return res.json({erro: 'sem cookies'});
+            }
+        }
+        
+        else{
+            return res.json({erro: 'sem cookies'});
+        }
     },
 
     async create(req, res){
@@ -31,10 +38,10 @@ module.exports = {
         if(!user){
             data = {nome, senha};
             user = await User.create(data);
-            return res.send({user});
+            return res.send({user, token: generateToken({id: user.id})});
         }
         else{
-            return res.status(400).send({error: 'registro com erro'});
+            return res.status(400).send({error: 'Registro já existe com esse nome'});
         }
     }, 
 
@@ -52,11 +59,7 @@ module.exports = {
 
         user.senha= undefined;
 
-        const token = jwt.sign({id:user.id}, config.secret,{
-            expiresIn: 864000, //um dia
-        })
-
-        res.cookie('session', token);
-        res.send({user});
+        //res.cookie('session_id', 'token',{expire: 360000 + Date.now()});
+        res.send({user, token: generateToken({id: user.id})});
     },
 }
