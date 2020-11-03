@@ -11,34 +11,16 @@ function generateToken (params={}){
 }
 
 module.exports = {
-    index(req, res, next){
-        validaCookies();
-
-        const cookies = req.cookies;
-        if('session_id' in cookies){
-            if(cookies.session_id === 'token'){
-                return res.json({cookies});
-                next();
-            }else{
-                return res.json({erro: 'sem cookies'});
-            }
-        }
-        
-        else{
-            return res.json({erro: 'sem cookies'});
-        }
-    },
-
+ 
     async create(req, res){
         const {nome, senha} = req.body; //info do front
-
         let data = {};
         let user = await User.findOne({nome});
 
         if(!user){
             data = {nome, senha};
             user = await User.create(data);
-            return res.send({user, token: generateToken({id: user.id})});
+            return res.send({user, token: generateToken({adm: user.admin})});
         }
         else{
             return res.status(400).send({error: 'Registro já existe com esse nome'});
@@ -60,6 +42,6 @@ module.exports = {
         user.senha= undefined;
 
         //res.cookie('session_id', 'token',{expire: 360000 + Date.now()});
-        res.send({user, token: generateToken({id: user.id})});
+        res.send({user, token: generateToken({adm: user.admin})});
     },
 }
