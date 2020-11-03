@@ -18,10 +18,10 @@ routes.post('/api/usuarios', User.create);
 routes.post('/api/autenticacao', User.find);
 
 routes.post('/api/banner', authAdmin, upload.single('image'), Banner.create);
-routes.post('/api/bannerExistingFile', Banner.createWithExistentFile);
+routes.post('/api/bannerExistingFile', authAdmin, Banner.createWithExistentFile);
 routes.get('/api/banner',  Banner.list);
-routes.delete('/api/banner',  Banner.delete);
-routes.put('/api/banner',  Banner.update);
+routes.delete('/api/banner', authAdmin, Banner.delete);
+routes.put('/api/banner', authAdmin, Banner.update);
 
 routes.post('/api/about', upload.single('image'), About.create);
 routes.get('/api/about', About.list);
